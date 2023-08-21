@@ -1,0 +1,29 @@
+name: CI Pipeline
+on: [push, pull_request]
+
+jobs:
+  build-linux:
+    strategy:
+      matrix:
+        image:
+          - ubuntu-latest
+        webview-go-version:
+          - master
+        webview-go-examples-version:
+          - master
+    runs-on: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: SteffenL/webview-go
+          ref: ${{ matrix.webview-go-version }}
+      - uses: actions/checkout@v3
+        with:
+          repository: SteffenL/webview-go-example
+          ref: ${{ matrix.webview-go-examples-version }}
+      - name: Install dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.0-dev
+      - name: Build examples
+        run: go build ./webview-go-example/basic ./webview-go-example/bind
