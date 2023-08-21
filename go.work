@@ -1,6 +1,6 @@
 go 1.13
 
 use (
-    ../webview-go
-    ../webview-go-example
+    ./webview-go
+    ./webview-go-example
 )
